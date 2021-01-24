@@ -103,6 +103,19 @@ public class HistoryManager {
         return chunk;
     }
 
+    public boolean matchesRecent(String message, int messagesCount) {
+        int index = 0;
+        if (messages.length >= messagesCount) {
+            index = messages.length - 1 - messagesCount;
+        }
+        for (; index < messages.length - 1; index++) {
+            if (message.equals(messages[index])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static class HistoryManagerHolder {
         static final HistoryManager HOLDER_INSTANCE = new HistoryManager();
     }

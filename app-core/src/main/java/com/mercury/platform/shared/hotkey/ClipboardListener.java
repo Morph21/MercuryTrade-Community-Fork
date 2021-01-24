@@ -1,5 +1,6 @@
 package com.mercury.platform.shared.hotkey;
 
+import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
@@ -35,7 +36,9 @@ public class ClipboardListener {
                                  message.toLowerCase().contains("i'd like") ||
                                  (message.toLowerCase().contains("wtb") && message.toLowerCase().contains("(stash")))) {
 
-                                MercuryStoreCore.chatClipboardSubject.onNext(true);
+                                if (!HistoryManager.INSTANCE.matchesRecent(message, 10)) {
+                                    MercuryStoreCore.chatClipboardSubject.onNext(true);
+                                }
                             }
                         }
                     }
