@@ -2,17 +2,19 @@ package com.mercury.platform.shared;
 
 import com.mercury.platform.shared.entity.message.CurrencyTradeNotificationDescriptor;
 import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
-import org.junit.Before;
-import org.junit.Test;
+import com.mercury.platform.shared.messageparser.MessageParser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 /**
  * Created by Константин on 11.01.2017.
  */
 public class NotificationDescriptorParserTest {
     private MessageParser parser;
-    @Before
+    @BeforeEach
     public void before(){
         parser = new MessageParser();
     }

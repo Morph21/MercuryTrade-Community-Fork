@@ -1,7 +1,7 @@
 package com.mercury.platform.core.utils.interceptor;
 
 import com.mercury.platform.core.utils.interceptor.filter.MessageMatcher;
-import com.mercury.platform.shared.MessageParser;
+import com.mercury.platform.shared.messageparser.MessageParser;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
@@ -14,6 +14,10 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Intercepts outgoing trade messages,
+ * starting with {@code "@To"}, {@code "@Кому"} etc. depending og the game client language.
+ */
 public class TradeOutMessagesInterceptor extends MessageInterceptor {
     private MessageParser messageParser = new MessageParser();
     private PlainConfigurationService<NotificationSettingsDescriptor> config;
@@ -33,8 +37,8 @@ public class TradeOutMessagesInterceptor extends MessageInterceptor {
     protected void process(String message) {
         if (this.config.get().isOutNotificationEnable()) {
             LocalizationMatcher localizationMatcher = this.clients.stream()
-                    .filter(matcher -> matcher.isSuitableFor(message))
-                    .findAny().orElse(null);
+                                                                  .filter(matcher -> matcher.isSuitableFor(message))
+                                                                  .findAny().orElse(null);
             if (localizationMatcher != null) {
                 localizationMatcher.processMessage(message);
             }
@@ -45,16 +49,18 @@ public class TradeOutMessagesInterceptor extends MessageInterceptor {
     protected MessageMatcher match() {
         return message ->
                 this.clients.stream()
-                        .filter(matcher -> matcher.isSuitableFor(message))
-                        .findAny().orElse(null) != null;
+                            .filter(matcher -> matcher.isSuitableFor(message))
+                            .findAny().orElse(null) != null;
     }
 
     private abstract class LocalizationMatcher {
         public boolean isSuitableFor(String message) {
             return message.contains("Hi, I would like") ||
                    message.contains("Hi, I'd like") || message.contains("I'd like") ||
-                   (message.contains("wtb") && message.contains("(stash") ||
-                    message.contains("안녕하세요, 강탈")); //pathofexile.com/trade/
+                   message.contains("구매하고 싶습니다" /* "I would like to buy"*/) ||
+                   message.contains("Здравствуйте, хочу купить у вас") /* "Hello, I would like to buy" */ ||
+                   (message.contains("wtb") && message.contains("(stash")) ||
+                   message.contains("안녕하세요, 강탈" /* hello, ???*/); //pathofexile.com/trade/
         }
 
         public abstract String trimString(String src);

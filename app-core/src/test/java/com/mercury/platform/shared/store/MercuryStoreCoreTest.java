@@ -2,8 +2,9 @@ package com.mercury.platform.shared.store;
 
 import com.sun.jna.platform.DesktopWindow;
 import com.sun.jna.platform.WindowUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import rx.observers.TestSubscriber;
 
 import java.io.IOException;
@@ -13,9 +14,9 @@ import java.util.Map;
 
 public class MercuryStoreCoreTest {
     private static final boolean IS_WINDOWS = System.getProperty("os.name").startsWith("Windows");
-    @Before
+    @BeforeEach
     public void windowsOnly() {
-        org.junit.Assume.assumeTrue(IS_WINDOWS);
+        Assumptions.assumeTrue(IS_WINDOWS);
     }
 
     @Test

@@ -1,9 +1,10 @@
 package com.mercury.platform;
 
 import com.mercury.platform.ui.misc.Ratio;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class RatioTest {
     @Test

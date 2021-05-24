@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.frame.titled;
 
 import com.mercury.platform.shared.HistoryManager;
-import com.mercury.platform.shared.MessageParser;
+import com.mercury.platform.shared.messageparser.MessageParser;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationType;

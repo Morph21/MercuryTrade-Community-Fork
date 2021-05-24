@@ -2,9 +2,8 @@ package com.mercury.platform.shared;
 
 import com.mercury.platform.shared.config.configration.impl.adr.AdrConfigurationServiceMock;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class CloneHelperTest {
