@@ -105,6 +105,23 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
         JButton changeButton = this.componentsFactory.getBorderedButton("Change");
         poeFolderPanel.add(changeButton, BorderLayout.LINE_END);
 
+        JTextField poePidField = this.componentsFactory.getTextField("");
+        poePidField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
+                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT, 2)
+        ));
+        poePidField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int pid = applicationSnapshot.getGamePid();
+
+                try { pid = Integer.parseInt(poePidField.getText() + e.getKeyChar()); }
+                catch(Exception ex) {}
+
+                applicationSnapshot.setGamePid(pid);
+            }
+        });
+
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         changeButton.addActionListener(e -> {
@@ -153,6 +170,8 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
         root.add(this.componentsFactory.wrapToSlide(notifierStatusPicker, AppThemeColor.ADR_BG, 0, 0, 0, 2));
         root.add(this.componentsFactory.getTextLabel("Path of Exile folder: ", FontStyle.REGULAR, 16));
         root.add(this.componentsFactory.wrapToSlide(poeFolderPanel, AppThemeColor.ADR_BG, 0, 0, 2, 2));
+        root.add(this.componentsFactory.getTextLabel("Single game PID: ", FontStyle.REGULAR, 16));
+        root.add(this.componentsFactory.wrapToSlide(poePidField, AppThemeColor.ADR_BG, 0, 0, 2, 2));
         root.add(this.componentsFactory.getTextLabel("Pushbullet AccessToken ", FontStyle.REGULAR, 16));
         root.add(this.componentsFactory.wrapToSlide(pushbulletPanel, AppThemeColor.ADR_BG, 0, 0, 0, 2));
 

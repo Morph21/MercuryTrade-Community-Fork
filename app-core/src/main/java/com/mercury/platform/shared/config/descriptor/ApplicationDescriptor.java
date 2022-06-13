@@ -12,6 +12,7 @@ public class ApplicationDescriptor implements Serializable {
     private int maxOpacity;
     private int fadeTime;
     private String gamePath;
+    private int gamePid;
     private String pushbulletAccessToken;
     private boolean showOnStartUp;
     private boolean itemsGridEnable;
