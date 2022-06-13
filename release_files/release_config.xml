@@ -2,8 +2,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>C:\repo\github\MercuryTrade\release_files\MercuryTrade.jar</jar>
-  <outfile>C:\repo\github\MercuryTrade\release_files\MercuryTrade.exe</outfile>
+  <jar>.\release_files\MercuryTrade.jar</jar>
+  <outfile>.\release_files\MercuryTrade.exe</outfile>
   <errTitle>MercuryTrade needs java to work. Please install java first</errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -13,7 +13,7 @@
   <stayAlive>false</stayAlive>
   <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
-  <icon>C:\repo\github\MercuryTrade\release_files\app-icon.ico</icon>
+  <icon>.\release_files\app-icon.ico</icon>
   <singleInstance>
     <mutexName>MercuryTrade</mutexName>
     <windowTitle>MercuryTrade</windowTitle>
