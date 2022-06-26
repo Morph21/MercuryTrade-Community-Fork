@@ -227,9 +227,20 @@ public class ComponentsFactory {
 
             @Override
             public JToolTip createToolTip() {
-                return ComponentsFactory.this.createTooltip();
+                JToolTip tip = ComponentsFactory.this.createTooltip();
+                tip.setDoubleBuffered(true);
+                return tip;
             }
+
+            @Override
+            public Point getToolTipLocation(MouseEvent event) {
+                return super.getToolTipLocation(event);
+                //return event.getLocationOnScreen();
+            }
+
+
         };
+        button.setDoubleBuffered(true);
         button.setBackground(background);
         button.setFocusPainted(false);
         button.addChangeListener(e -> {
@@ -266,8 +277,6 @@ public class ComponentsFactory {
 
         });
 
-        ToolTipManager.sharedInstance().registerComponent(button);
-        ToolTipManager.sharedInstance().setEnabled(true);
         button.setBorder(BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT, 4));
         button.setVerticalAlignment(SwingConstants.CENTER);
         BufferedImage icon = null;

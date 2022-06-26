@@ -35,6 +35,9 @@ public class AppMain {
             System.setProperty("sun.java2d.d3d", "false");
             System.setProperty("jna.nosys", "true");
 
+            ToolTipManager.sharedInstance().setInitialDelay(1000);
+            //ToolTipManager.sharedInstance().setLightWeightPopupEnabled(true);
+
             new ErrorHandler();
             mercuryLoadingFrameThread = new Thread(() -> {
                 mercuryLoadingFrame = new MercuryLoadingFrame();

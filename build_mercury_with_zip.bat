@@ -16,6 +16,9 @@ echo build_mercury_bat completed
 echo preparing zip files for release starting...
 echo zipping with jar file start
 cd release_files
+echo removing old zip files
+del MercuryTrade.jar.zip
+del MercuryTrade.exe.zip
 copy MercuryTrade.jar MercuryTrade
 call powershell Compress-Archive MercuryTrade MercuryTrade.jar.zip
 cd MercuryTrade

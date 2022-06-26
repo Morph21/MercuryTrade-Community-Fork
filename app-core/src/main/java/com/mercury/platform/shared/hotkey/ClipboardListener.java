@@ -35,12 +35,7 @@ public class ClipboardListener {
                         String message = c.getData(df).toString();
                         if (!message.equals(lastData)) {
                             lastData = message;
-                            if (message.toLowerCase().contains("@") &&
-                                    (message.toLowerCase().contains("hi, i would like") ||
-                                            message.toLowerCase().contains("hi, i'd like") ||
-                                            message.toLowerCase().contains("i'd like") ||
-                                            (message.toLowerCase().contains("wtb") && message.toLowerCase().contains("(stash")))) {
-
+                            if (isBuyMessage(message)){
                                 MercuryStoreCore.chatClipboardSubject.onNext(true);
                             }
                         }
@@ -51,6 +46,30 @@ public class ClipboardListener {
             }
         }).start();
 
+    }
+
+    private boolean isBuyMessage(String message){
+        if(!message.contains("@")) {
+            return false;
+        }
+
+        String messageLowercase = message.toLowerCase();
+
+        if(messageLowercase.contains("hi, i would like")
+            || messageLowercase.contains("hi, i'd like")
+            || messageLowercase.contains("i'd like")
+            || (messageLowercase.contains("wtb") && messageLowercase.contains("(stash"))
+            || messageLowercase.contains("구매하고 싶습니다") /* Korean: I would like to buy */
+            || messageLowercase.contains("хочу купить у вас") /* Russian: I would like to buy */
+            || messageLowercase.contains("eu gostaria de comprar") /* Brazilian Portuguese: I would like to buy */
+            || messageLowercase.contains("เราต้องการชื้อ") /* Thai: I would like to buy */
+            || (messageLowercase.contains("ich möchte") && messageLowercase.contains("kaufen")) /* German: I would like to buy */
+            || messageLowercase.contains("je souhaiterais t'acheter") /* French: I would like to buy */
+            || messageLowercase.contains("を購入したいです") /* Japanese: I would like to buy */) {
+            return true;
+        }
+
+        return false;
     }
 
     public static void createListener() {

@@ -53,7 +53,9 @@ public abstract class AbstractOverlaidFrame extends JFrame implements AsSubscrib
             }
         });
 
-        MercuryStoreCore.frameVisibleSubject.subscribe(state -> SwingUtilities.invokeLater(() -> this.changeVisible(state)));
+        MercuryStoreCore.frameVisibleSubject.subscribe(state -> SwingUtilities.invokeLater(() -> {
+            this.changeVisible(state);
+        }));
     }
 
     protected void changeVisible(FrameVisibleState state) {

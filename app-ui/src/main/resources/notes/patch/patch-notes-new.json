@@ -1,5 +1,26 @@
 [
   {
+    "version": "1.2.7",
+    "fix": [
+      {
+        "changed": "Fixed outgoing notifications messages for different languages, thanks to @bri2"
+      }
+    ]
+  },
+  {
+    "version": "1.2.6",
+    "minorChanges": [
+      {
+        "changed": "Added enter command after find in stash command executes."
+      }
+    ],
+    "fix": [
+      {
+        "changed": "Fixed tooltips not hiding"
+      }
+    ]
+  },
+  {
     "version": "1.2.5",
     "minorChanges": [
       {
