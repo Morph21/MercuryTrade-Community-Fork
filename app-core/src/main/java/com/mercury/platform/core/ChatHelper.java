@@ -24,6 +24,9 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class ChatHelper implements AsSubscriber {
     private Robot robot;
@@ -202,19 +205,45 @@ public class ChatHelper implements AsSubscriber {
     final int SWP_NOMOVE = 0x0002;
     final int SWP_SHOWWINDOW = 0x0040;
 
+    static public ArrayList<DesktopWindow> getPoeWindows() {
+        ArrayList<DesktopWindow> windows = new ArrayList<DesktopWindow>();
+        WindowUtils.getAllWindows(false).forEach(window -> {
+            char[] className = new char[512];
+            User32.INSTANCE.GetClassName(window.getHWND(), className, 512);
+
+            if (Native.toString(className).equals("POEWindowClass")) {
+                windows.add(window);
+            }
+        });
+
+        return windows;
+    }
+
+    static public int getWindowPid(DesktopWindow window) {
+        IntByReference winpid = new IntByReference();
+        User32.INSTANCE.GetWindowThreadProcessId(window.getHWND(), winpid);
+
+        return winpid.getValue();
+    }
+
+    static public ArrayList<Integer> getPoeWindowPids() {
+        ArrayList<DesktopWindow> windows = getPoeWindows();
+        ArrayList<Integer> pids = new ArrayList<Integer>();
+
+        windows.forEach(window -> { pids.add(getWindowPid(window)); });
+        return pids;
+    }
+
     private void gameToFront() {
         int pid = Configuration.get().applicationConfiguration().get().getGamePid();
-        IntByReference winpid = new IntByReference();
 
         if (SystemUtils.IS_OS_WINDOWS) {
-            WindowUtils.getAllWindows(false).forEach(window -> {
-                char[] className = new char[512];
-                User32.INSTANCE.GetClassName(window.getHWND(), className, 512);
-                User32.INSTANCE.GetWindowThreadProcessId(window.getHWND(), winpid);
+            getPoeWindows().forEach(window -> {
+                int winpid = getWindowPid(window);
 
-                boolean pidMatch = (pid == 0) || (pid == winpid.getValue());
+                boolean pidMatch = (pid == 0) || (pid == winpid);
 
-                if (Native.toString(className).equals("POEWindowClass") && pidMatch) {
+                if (pidMatch) {
                     User32.INSTANCE.ShowWindow(window.getHWND(), 5);
 
                     boolean isAtFront = User32.INSTANCE.SetForegroundWindow(window.getHWND());
@@ -232,6 +261,7 @@ public class ChatHelper implements AsSubscriber {
                     User32.INSTANCE.SetFocus(window.getHWND());
                 }
             });
+
 //            User32.INSTANCE.EnumWindows((hWnd, arg1) -> {
 //                char[] className = new char[512];
 //                User32.INSTANCE.GetClassName(hWnd, className, 512);
