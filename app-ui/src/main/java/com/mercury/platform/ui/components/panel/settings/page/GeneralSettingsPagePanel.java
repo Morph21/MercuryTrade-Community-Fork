@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.components.panel.settings.page;
 
 
+import com.mercury.platform.core.ChatHelper;
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
 import com.mercury.platform.shared.CloneHelper;
 import com.mercury.platform.shared.PushBulletManager;
@@ -12,13 +13,15 @@ import com.mercury.platform.shared.config.descriptor.VulkanDescriptor;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.manager.HideSettingsManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import org.checkerframework.checker.units.qual.A;
 
 import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GeneralSettingsPagePanel extends SettingsPagePanel {
     private PlainConfigurationService<ApplicationDescriptor> applicationConfig;
@@ -28,6 +31,19 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
 
     private JSlider minSlider;
     private JSlider maxSlider;
+
+    private String[] PidStrings;
+    private ArrayList<Integer> Pids;
+
+    private void updatePoePids() {
+        ArrayList<String> PidOptions = new ArrayList<String>(Arrays.asList(
+                "Always Switch (old behavior)",
+                "Never switch"));
+        Pids = ChatHelper.getPoeWindowPids();
+        Pids.forEach(pid -> { PidOptions.add(String.format("PID: %d", pid.intValue())); });
+        PidStrings = new String[PidOptions.size()];
+        PidStrings = PidOptions.toArray(PidStrings);
+    }
 
     @Override
     public void onViewInit() {
@@ -105,6 +121,32 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
         JButton changeButton = this.componentsFactory.getBorderedButton("Change");
         poeFolderPanel.add(changeButton, BorderLayout.LINE_END);
 
+        updatePoePids();
+        JComboBox poePidPicker = this.componentsFactory.getComboBox(PidStrings);
+        poePidPicker.setSelectedItem(this.applicationSnapshot.getNotifierStatus().asPretty());
+        poePidPicker.addPopupMenuListener(new PopupMenuListener() {
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                updatePoePids();
+                poePidPicker.setModel(new DefaultComboBoxModel(PidStrings));
+            }
+
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) {}
+        });
+
+        poePidPicker.addActionListener(action -> {
+            int sel = poePidPicker.getSelectedIndex();
+
+            switch (sel) {
+                case 0: applicationSnapshot.setGamePid(0); break;
+                case 1: applicationSnapshot.setGamePid(-1); break;
+                default: applicationSnapshot.setGamePid(Pids.get(sel - 2));
+            }
+        });
+
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         changeButton.addActionListener(e -> {
@@ -153,6 +195,8 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
         root.add(this.componentsFactory.wrapToSlide(notifierStatusPicker, AppThemeColor.ADR_BG, 0, 0, 0, 2));
         root.add(this.componentsFactory.getTextLabel("Path of Exile folder: ", FontStyle.REGULAR, 16));
         root.add(this.componentsFactory.wrapToSlide(poeFolderPanel, AppThemeColor.ADR_BG, 0, 0, 2, 2));
+        root.add(this.componentsFactory.getTextLabel("Multi-client switching: ", FontStyle.REGULAR, 16));
+        root.add(this.componentsFactory.wrapToSlide(poePidPicker, AppThemeColor.ADR_BG, 0, 0, 2, 2));
         root.add(this.componentsFactory.getTextLabel("Pushbullet AccessToken ", FontStyle.REGULAR, 16));
         root.add(this.componentsFactory.wrapToSlide(pushbulletPanel, AppThemeColor.ADR_BG, 0, 0, 0, 2));
 
