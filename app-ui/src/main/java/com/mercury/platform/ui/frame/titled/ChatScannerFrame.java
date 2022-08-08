@@ -40,8 +40,6 @@ public class ChatScannerFrame extends AbstractTitledComponentFrame {
     public ChatScannerFrame() {
         super();
         this.processingHideEvent = false;
-        this.setFocusableWindowState(true);
-        this.setFocusable(true);
         this.setAlwaysOnTop(false);
     }
 

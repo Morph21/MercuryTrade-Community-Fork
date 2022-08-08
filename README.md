@@ -135,6 +135,14 @@ Mercury can highlight the stash location of the item somebody's buying. You will
 Activate this mode if you don't want to see (and hear!) anything from the application for a while. **MercuryTrade** will continue working in hidden mode.
 
 ---
+## HOW TO BUILD
+---
+Instructions about how to build jar and exe files are over here:
+
+https://github.com/Morph21/MercuryTrade-Community-Fork/wiki/How-to-compile-and-run-MercuryTrade
+
+
+---
 ## HOW TO INSTALL:
 ---
 

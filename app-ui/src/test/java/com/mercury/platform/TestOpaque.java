@@ -17,7 +17,6 @@ public class TestOpaque {
         JDialog w = new JDialog();
         w.setPreferredSize(new Dimension(100,200));
         w.setUndecorated(true);
-//        w.setFocusableWindowState(false);
         w.add(new JTextField("Test"));
 //        w.add(new JComponent() {
 //            /**

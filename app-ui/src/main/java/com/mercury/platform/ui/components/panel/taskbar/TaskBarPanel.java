@@ -245,7 +245,6 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(exitButton);
         this.add(Box.createRigidArea(new Dimension(3, 4)));
-        //this.setFocusable(true);
     }
 
     private void getPushbullet(boolean pushbulletEnabled, JButton pushbulletNotification) {

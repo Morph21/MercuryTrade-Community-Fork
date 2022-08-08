@@ -49,8 +49,6 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
 
     public SettingsFrame() {
         super();
-        this.setFocusable(true);
-        this.setFocusableWindowState(true);
         this.setAlwaysOnTop(false);
         this.processingHideEvent = false;
         this.processHideEffect = false;

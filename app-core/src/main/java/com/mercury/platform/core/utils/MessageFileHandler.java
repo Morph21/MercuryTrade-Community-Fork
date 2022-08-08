@@ -24,6 +24,8 @@ public class MessageFileHandler implements AsSubscriber {
     private String logFilePath;
     private Date lastMessageDate = new Date();
     private Pattern datePattern;
+    private Pattern p = Pattern.compile("20[2-9][0-9]\\/[0-2][0-9]\\/[0-2][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]");
+
 
     private List<MessageInterceptor> interceptors = new ArrayList<>();
 
@@ -74,12 +76,17 @@ public class MessageFileHandler implements AsSubscriber {
                 message != null && !message.equals("\n"))
                 .collect(Collectors.toList());
 
-        Pattern p = Pattern.compile("20[2-9][0-9]");
         List<String> resultMessages = filteredMessages.stream().filter(message -> {
             Matcher m = p.matcher(message);
             if (m.find()) {
-                Date date = new Date(StringUtils.substring(message, 0, 20));
-                return date.after(lastMessageDate);
+                try {
+                    Date date = new Date(StringUtils.substring(message, 0, 20));
+                    return date.after(lastMessageDate);
+                } catch (Exception e) {
+                    logger.error("Error while parsing message: " + message, e);
+                    return false;
+                }
+
             } else {
                 return false;
             }
