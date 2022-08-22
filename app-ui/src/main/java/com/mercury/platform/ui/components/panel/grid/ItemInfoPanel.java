@@ -18,7 +18,6 @@ import java.awt.event.MouseEvent;
 public class ItemInfoPanel extends JPanel implements ViewInit {
     private ComponentsFactory componentsFactory;
     private ItemTradeNotificationDescriptor message;
-    private JPanel cell;
     private StashTabDescriptor stashTabDescriptor;
     private ItemCell itemCell;
     private Timer timer;
@@ -29,7 +28,6 @@ public class ItemInfoPanel extends JPanel implements ViewInit {
         this.componentsFactory = factory;
         this.controller = new ItemInfoPanelControllerImpl(message);
         this.message = message;
-        this.cell = itemCell.getCell();
         this.itemCell = itemCell;
         this.stashTabDescriptor = stashTabDescriptor;
         setupMouseOverListener();
@@ -68,7 +66,7 @@ public class ItemInfoPanel extends JPanel implements ViewInit {
                 if (timer != null && timer.isRunning()) {
                     timer.stop();
                 }
-                cell.setBorder(null);
+                itemCell.getCellPanel().hideCell();
                 controller.changeTabType(this);
             });
         }
@@ -85,7 +83,7 @@ public class ItemInfoPanel extends JPanel implements ViewInit {
                 if (timer != null && timer.isRunning()) {
                     timer.stop();
                 }
-                cell.setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_DEFAULT, 2));
+                itemCell.getCellPanel().showCell(itemCell.getX(), itemCell.getY());
             }
 
             @Override
@@ -96,7 +94,7 @@ public class ItemInfoPanel extends JPanel implements ViewInit {
                 timer = new Timer(1500, null);
                 timer.addActionListener(action -> {
                     timer.stop();
-                    cell.setBorder(null);
+                    itemCell.getCellPanel().hideCell();
                     MercuryStoreUI.repaintSubject.onNext(ItemsGridFrame.class);
                 });
                 timer.start();
@@ -126,13 +124,5 @@ public class ItemInfoPanel extends JPanel implements ViewInit {
 
     public void setItemCell(ItemCell itemCell) {
         this.itemCell = itemCell;
-    }
-
-    public JPanel getCell() {
-        return cell;
-    }
-
-    public void setCell(JPanel cell) {
-        this.cell = cell;
     }
 }
