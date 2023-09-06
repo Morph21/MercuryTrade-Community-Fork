@@ -1,7 +1,5 @@
 package com.mercury.platform.ui.frame.movable;
 
-import com.mercury.platform.shared.config.Configuration;
-import com.mercury.platform.shared.config.descriptor.StashTabDescriptor;
 import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
@@ -18,7 +16,6 @@ import lombok.NonNull;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.List;
 import java.util.Map;
 
 import static java.awt.event.ItemEvent.DESELECTED;
@@ -101,8 +98,8 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
         topPanel.setBackground(AppThemeColor.FRAME);
         JPanel headerPanel = componentsFactory.getTransparentPanel(new BorderLayout());
 
-        JPanel defaultGridPanel = createGridPanel(12,12);
-        JPanel quadGridPanel = createGridPanel(24,24);
+        GridPanel defaultGridPanel = new GridPanel(12,12);
+        GridPanel quadGridPanel = new GridPanel(24,24);
 
 //        JPanel folderDefaultGridPanel = createGridPanel(12,12);
 //        JPanel folderQuadGridPanel = createGridPanel(24,24);
@@ -255,26 +252,6 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
         panel.add(defaultGridPanel, BorderLayout.CENTER);
         setUpResizePanels(panel);
         return panel;
-    }
-
-    private JPanel createGridPanel(int rows, int cols) {
-        JPanel gridPanel = componentsFactory.getTransparentPanel(new GridLayout(rows, cols));
-        gridPanel.setBorder(null);
-        for (int x = 0; x < rows; x++) {
-            for (int y = 0; y < cols; y++) {
-                gridPanel.add(getCellPlaceholder());
-            }
-        }
-        gridPanel.setBackground(AppThemeColor.FRAME_ALPHA);
-        return gridPanel;
-    }
-
-    private JPanel getCellPlaceholder() {
-        JPanel cell = new JPanel();
-        cell.setOpaque(true);
-        cell.setBackground(AppThemeColor.TRANSPARENT);
-        cell.setBorder(BorderFactory.createLineBorder(AppThemeColor.SCROLL_BAR));
-        return cell;
     }
 
     private void setUpResizePanels(JPanel root) {
